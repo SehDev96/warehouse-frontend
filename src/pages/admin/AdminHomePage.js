@@ -14,7 +14,6 @@ import {
 
 import ListProduct from "../../components/ListProduct";
 import AddProduct from "../../components/AddProduct";
-import EditProduct from "../../components/EditProduct";
 
 import { useNavigate } from "react-router-dom";
 
@@ -90,20 +89,28 @@ function AdminHomePage(props) {
     //   </Navbar>
     // </>
     <div style={{ marginLeft: 20, marginRight: 20 }}>
-      <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
-        <h2>Warehouse Management System</h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginLeft: 20,
+          marginRight: 20,
+          marginBottom: 20,
+        }}
+      >
+        <h2 style={{ textAlign: "center", margin: 0 }}>
+          Warehouse Management System
+        </h2>
+        <Button style={{ marginTop: 10, marginRight: 10 }} onClick={logout}>
+          Logout
+        </Button>
       </div>
-      <Button onClick={logout}>Logout</Button>
       <div style={{ paddingLeft: 30 }}>
         <Nav fill variant="tabs" defaultActiveKey="link-1">
           <Nav.Item>
             <Nav.Link id={LIST_PRODUCT} onClick={itemHandler} eventKey="link-1">
               List Product
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link id={EDIT_PRODUCT} onClick={itemHandler} eventKey="link-2">
-              Edit Product
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
@@ -116,8 +123,6 @@ function AdminHomePage(props) {
           switch (page) {
             case LIST_PRODUCT:
               return <ListProduct />;
-            case EDIT_PRODUCT:
-              return <EditProduct />;
             case ADD_PRODUCT:
               return <AddProduct />;
             default:

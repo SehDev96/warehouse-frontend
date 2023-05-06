@@ -36,8 +36,73 @@ export async function addProductFromCsv(file) {
 export async function getAllProducts() {
   console.log("ACCESS TOKEN: ", localStorage.getItem("access_token"));
   try {
-    const response = await axios.get(endpoints.GET_ALL_PRODUCTS);
+    const response = await axios.get(endpoints.GET_ALL_PRODUCTS, {
+      params: {
+        q: "Mineral",
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    });
     console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response;
+  }
+}
+
+export async function getPaginatedProducts(parameter) {
+  console.log("Pagination: ", parameter);
+  let response = null;
+
+  try {
+    // if(parameter === undefined){
+    //   response = await axios.get(endpoints.PAGINATED_ALL_PRODUCT);
+    // } else {
+    response = await axios.get(endpoints.PAGINATED_ALL_PRODUCT, {
+      params: {
+        q: parameter.q,
+        pageIndex: parameter.pageIndex,
+        pageSize: 10,
+      },
+    });
+    // }
+
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response;
+  }
+}
+
+export async function updateEditedProduct(appProduct) {
+  console.log("Product To Submit: ", appProduct);
+  try {
+    const response = await axios.put(
+      endpoints.UPDATE_PRODUCT + "/" + appProduct.id,
+      {
+        name: appProduct.name,
+        description: appProduct.description,
+        quantity: appProduct.quantity,
+        price: appProduct.price,
+      }
+    );
+    // const response = await axios.put(
+    //   endpoints.UPDATE_PRODUCT,
+    //   JSON.parse(appProduct)
+    // );
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response;
+  }
+}
+
+export async function searchProduct(key) {
+  try {
+    const response = await axios.get(endpoints.SEARCH_PRODUCT, {
+      params: { key },
+    });
     return response.data;
   } catch (error) {
     console.log(error.response);

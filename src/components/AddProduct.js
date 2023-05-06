@@ -64,11 +64,11 @@ function AddProduct(props) {
     const formData = new FormData(event.target);
     let response = await addProductFromCsv(formData);
     if (response.success && response.response_code === 200) {
-      for(let i=0;i<response.payload.length;i++){
+      for (let i = 0; i < response.payload.length; i++) {
         setProductList((productList) => [...productList, response.payload[i]]);
       }
     }
-  };
+  }
 
   return (
     <div>
@@ -178,36 +178,38 @@ function AddProduct(props) {
         </div>
       </div>
       <div style={{ marginTop: 20 }}>
-        <div style={{ textAlign: "center" }}>
-          <h6>Added Products</h6>
-        </div>
         {productList.length > 0 ? (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Product Sku</th>
-                <th>Product Name</th>
-                <th>Product Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {productList.map((item, index) => {
-                return (
-                  <tr key={item.id} id={item.id}>
-                    <td>{index + 1}</td>
-                    <td>{item.sku}</td>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+          <>
+            <div style={{ textAlign: "center" }}>
+              <h6>Added Products</h6>
+            </div>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product Sku</th>
+                  <th>Product Name</th>
+                  <th>Product Description</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productList.map((item, index) => {
+                  return (
+                    <tr key={item.id} id={item.id}>
+                      <td>{index + 1}</td>
+                      <td>{item.sku}</td>
+                      <td>{item.name}</td>
+                      <td>{item.description}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.price}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </>
         ) : null}
       </div>
     </div>
