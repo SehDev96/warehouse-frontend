@@ -13,3 +13,7 @@ export const ADD_WAREHOUSE = API_PREFIX + "/warehouse/add";
 export const GET_ALL_WAREHOUSE = API_PREFIX + "/warehouse/all";
 export const UPDATE_WAREHOUSE = API_PREFIX + "/warehouse/update";
 export const GET_WAREHOUSE_CODES = API_PREFIX + "/warehouse/codelist";
+
+export const ADD_INBOUND_TRANSACTION = API_PREFIX + "/transaction/inbound/add";
+export const ADD_INBOUND_TRANSACTION_CSV = API_PREFIX + "/transaction/inbound/add/upload";
+

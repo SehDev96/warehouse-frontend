@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { getWarehouseCodeList } from "../service/warehouseservice";
+import InboundTransactionModel from "../model/InboundTransactionModel";
+import {
+  addInboundTransaction,
+  addInboundTransactionFromCsv,
+} from "../service/transactionservice";
 
 const SKU = "sku";
 const REFERENCE = "reference";
 const QUANTITY = "quantity";
 const DATE_RECEIVED = "date_received";
-const LOCATION = "location";
+const WAREHOUSE_CODE = "warehouse_code";
 const REMARKS = "remarks";
 
 function InboundTransaction(props) {
+  const [inboundTransaction, setInboundTransaction] = useState(
+    new InboundTransactionModel()
+  );
+  const [addedInboundList, setAddedInboundList] = useState([]);
   const [warehouseCodeList, setWarehouseCodeList] = useState([]);
+
+  const formRef = useRef(null);
 
   useEffect(() => {
     async function pageLoader() {
@@ -25,6 +36,100 @@ function InboundTransaction(props) {
     pageLoader();
   }, []);
 
+  async function addInboundTransactionSubmit(event) {
+    event.preventDefault();
+    console.log("DATA TO BE SENT: ", inboundTransaction);
+    if (
+      inboundTransaction.productSku === null ||
+      inboundTransaction.productSku === undefined ||
+      inboundTransaction.productSku === ""
+    ) {
+      alert("Product Sku is empty.");
+      return null;
+    }
+
+    if (
+      inboundTransaction.warehouseCode === null ||
+      inboundTransaction.warehouseCode === undefined ||
+      inboundTransaction.warehouseCode === ""
+    ) {
+      alert("Please choose warehouse code");
+      return null;
+    }
+
+    let response = await addInboundTransaction(inboundTransaction);
+    if (response.success && response.response_code === 200) {
+      alert(response.message);
+      formRef.current.reset();
+      setAddedInboundList((addedInboundList) => [
+        ...addedInboundList,
+        response.payload,
+      ]);
+    } else if (response.response_code === 500) {
+      alert(response.message);
+    }
+    console.log("Response: ", response);
+  }
+
+  async function setInboundTransactionDetails(val, field) {
+    switch (field) {
+      case SKU:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          productSku: val,
+        });
+        break;
+      case REFERENCE:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          reference: val,
+        });
+        break;
+      case QUANTITY:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          quantity: val,
+        });
+        break;
+      case DATE_RECEIVED:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          dateReceived: val,
+        });
+        break;
+      case WAREHOUSE_CODE:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          warehouseCode: val,
+        });
+        break;
+      case REMARKS:
+        await setInboundTransaction({
+          ...inboundTransaction,
+          remarks: val,
+        });
+        break;
+
+      default:
+        return null;
+    }
+  }
+
+  async function handleCsvSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    let response = await addInboundTransactionFromCsv(formData);
+    if (response.success && response.response_code === 200) {
+      alert(response.message);
+      for (let i = 0; i < response.payload.length; i++) {
+        setAddedInboundList((addedInboundList) => [
+          ...addedInboundList,
+          response.payload[i],
+        ]);
+      }
+    }
+  }
+
   return (
     <div>
       <div
@@ -34,9 +139,7 @@ function InboundTransaction(props) {
           flexDirection: "row",
         }}
       >
-        <Form
-        // onSubmit={addProductSubmit}
-        >
+        <Form ref={formRef} onSubmit={addInboundTransactionSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <div
               style={{ marginTop: 20, display: "flex", alignItems: "center" }}
@@ -45,9 +148,9 @@ function InboundTransaction(props) {
                 Product Sku:
               </Form.Label>
               <Form.Control
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, NAME)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(event.target.value, SKU)
+                }
                 style={{ flex: 1 }}
                 type="text"
                 placeholder=""
@@ -62,9 +165,9 @@ function InboundTransaction(props) {
                 Reference:
               </Form.Label>
               <Form.Control
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, DESCRIPTION)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(event.target.value, REFERENCE)
+                }
                 style={{ flex: 1 }}
                 type="text"
                 placeholder=""
@@ -79,9 +182,9 @@ function InboundTransaction(props) {
                 Quantity:
               </Form.Label>
               <Form.Control
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, QUANTITY)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(event.target.value, QUANTITY)
+                }
                 style={{ flex: 1 }}
                 type="number"
                 placeholder="0"
@@ -96,9 +199,12 @@ function InboundTransaction(props) {
                 Date Received:
               </Form.Label>
               <Form.Control
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, PRICE)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(
+                    event.target.value,
+                    DATE_RECEIVED
+                  )
+                }
                 style={{ flex: 1 }}
                 type="text"
                 placeholder="DD/MM/YYYY"
@@ -110,13 +216,16 @@ function InboundTransaction(props) {
               style={{ marginTop: 20, display: "flex", alignItems: "center" }}
             >
               <Form.Label style={{ width: 150, marginRight: "10px" }}>
-                Location:
+                Warehouse Code:
               </Form.Label>
               <Form.Select
                 style={{ flex: 1 }}
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, PRICE)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(
+                    event.target.value,
+                    WAREHOUSE_CODE
+                  )
+                }
                 aria-label="Location Select"
               >
                 <option disabled selected value="">
@@ -124,7 +233,7 @@ function InboundTransaction(props) {
                 </option>
                 {warehouseCodeList.map((item) => {
                   return (
-                    <option id={item} value={item}>
+                    <option key={item} id={item} value={item}>
                       {item}
                     </option>
                   );
@@ -141,9 +250,9 @@ function InboundTransaction(props) {
                 Remarks:
               </Form.Label>
               <Form.Control
-                // onChange={(event) =>
-                //   setProductDetails(event.target.value, PRICE)
-                // }
+                onChange={(event) =>
+                  setInboundTransactionDetails(event.target.value, REMARKS)
+                }
                 style={{ flex: 1 }}
                 type="text"
                 placeholder=""
@@ -151,7 +260,7 @@ function InboundTransaction(props) {
             </div>
           </Form.Group>
           <Button variant="primary" type="submit">
-            Add Product
+            Add Transaction
           </Button>
         </Form>
 
@@ -163,9 +272,7 @@ function InboundTransaction(props) {
           }}
         ></div>
         <div>
-          <Form
-          // onSubmit={handleSubmit}
-          >
+          <Form onSubmit={handleCsvSubmit}>
             <Form.Group controlId="formFile">
               <Form.Label>Upload a file (.csv)</Form.Label>
               <Form.Control type="file" name="file" accept=".csv" />
@@ -177,6 +284,43 @@ function InboundTransaction(props) {
             </div>
           </Form>
         </div>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        {addedInboundList.length > 0 ? (
+          <>
+            <div style={{ textAlign: "center" }}>
+              <h6>Added Transaction</h6>
+            </div>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product Sku</th>
+                  <th>Reference</th>
+                  <th>Quantity</th>
+                  <th>Date Received</th>
+                  <th>Warehouse Code</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {addedInboundList.map((item, index) => {
+                  return (
+                    <tr key={item.id} id={item.id}>
+                      <td>{index + 1}</td>
+                      <td>{item.productSku}</td>
+                      <td>{item.reference}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.dateReceived}</td>
+                      <td>{item.warehouseCode}</td>
+                      <td>{item.remarks}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </>
+        ) : null}
       </div>
     </div>
   );
