@@ -8,3 +8,8 @@ export const GET_ALL_PRODUCTS = API_PREFIX + "/product/allproducts";
 export const UPDATE_PRODUCT = API_PREFIX + "/product/updateproduct";
 export const SEARCH_PRODUCT = API_PREFIX + "/product/search";
 export const PAGINATED_ALL_PRODUCT = API_PREFIX + "/product/all/pagination";
+
+export const ADD_WAREHOUSE = API_PREFIX + "/warehouse/add";
+export const GET_ALL_WAREHOUSE = API_PREFIX + "/warehouse/all";
+export const UPDATE_WAREHOUSE = API_PREFIX + "/warehouse/update";
+export const GET_WAREHOUSE_CODES = API_PREFIX + "/warehouse/codelist";

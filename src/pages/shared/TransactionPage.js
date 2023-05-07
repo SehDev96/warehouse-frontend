@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../../styles/adminhomepage.css";
 import {
   Container,
   Row,
@@ -11,29 +10,21 @@ import {
   Offcanvas,
   Form,
 } from "react-bootstrap";
-import { FaBars } from "react-icons/fa";
-
-import ListProduct from "../../components/ListProduct";
-import AddProduct from "../../components/AddProduct";
-
 import { useNavigate } from "react-router-dom";
+import InboundTransaction from "../../components/InboundTransaction";
+import OutboundTransaction from "../../components/OutboundTransaction";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 
-const LIST_PRODUCT = "list_product";
-const ADD_PRODUCT = "add_product";
-const EDIT_PRODUCT = "edit_product";
+const INBOUND_TRANSACTION = "inbound_transaction";
+const OUTBOUND_TRANSACTION = "outbound_transaction";
 
-function AdminHomePage(props) {
+function TransactionPage(props) {
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const [page, setPage] = useState(LIST_PRODUCT);
+  const [page, setPage] = useState(INBOUND_TRANSACTION);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const expand = "test";
 
-  const itemHandler = (event) => {
-    console.log(event.target.id);
+  const componentHandler = (event) => {
     setPage(event.target.id);
   };
 
@@ -61,7 +52,9 @@ function AdminHomePage(props) {
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="/admin/home">Product Management</Nav.Link>
-                <Nav.Link href="/admin/transaction">Transaction Management</Nav.Link>
+                <Nav.Link href="/admin/transaction">
+                  Transaction Management
+                </Nav.Link>
                 <Nav.Link href="#action2">User Management</Nav.Link>
                 <Nav.Link onClick={logout}>Logout</Nav.Link>
               </Nav>
@@ -71,35 +64,35 @@ function AdminHomePage(props) {
       </Navbar> */}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
-          Product Management
+          Transaction Management
         </h2>
         <div style={{ paddingLeft: 30 }}>
           <Nav fill variant="tabs" defaultActiveKey="link-1">
             <Nav.Item>
               <Nav.Link
-                id={LIST_PRODUCT}
-                onClick={itemHandler}
+                id={INBOUND_TRANSACTION}
+                onClick={componentHandler}
                 eventKey="link-1"
               >
-                List Product
+                Inbound Transaction
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link
-                id={ADD_PRODUCT}
-                onClick={itemHandler}
+                id={OUTBOUND_TRANSACTION}
+                onClick={componentHandler}
                 eventKey="link-3"
               >
-                Add Product
+                Outbound Transaction
               </Nav.Link>
             </Nav.Item>
           </Nav>
           {(() => {
             switch (page) {
-              case LIST_PRODUCT:
-                return <ListProduct />;
-              case ADD_PRODUCT:
-                return <AddProduct />;
+              case INBOUND_TRANSACTION:
+                return <InboundTransaction />;
+              case OUTBOUND_TRANSACTION:
+                return <OutboundTransaction />;
               default:
                 return null;
             }
@@ -110,4 +103,4 @@ function AdminHomePage(props) {
   );
 }
 
-export default AdminHomePage;
+export default TransactionPage;
