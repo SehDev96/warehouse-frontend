@@ -17,3 +17,6 @@ export const GET_WAREHOUSE_CODES = API_PREFIX + "/warehouse/codelist";
 export const ADD_INBOUND_TRANSACTION = API_PREFIX + "/transaction/inbound/add";
 export const ADD_INBOUND_TRANSACTION_CSV = API_PREFIX + "/transaction/inbound/add/upload";
 
+export const ADD_OUTBOUND_TRANSACTION = API_PREFIX + "/transaction/outbound/add";
+export const ADD_OUTBOUND_TRANSACTION_CSV = API_PREFIX + "/transaction/outbound/add/upload";
+
