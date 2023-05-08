@@ -1,109 +1,79 @@
 import React, { useState } from "react";
 import "../../styles/adminhomepage.css";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Navbar,
-  Nav,
-  NavDropdown,
-  Offcanvas,
-  Form,
-} from "react-bootstrap";
-import { FaBars } from "react-icons/fa";
-
-import ListProduct from "../../components/ListProduct";
-import AddProduct from "../../components/AddProduct";
 
 import { useNavigate } from "react-router-dom";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
-
-const LIST_PRODUCT = "list_product";
-const ADD_PRODUCT = "add_product";
-const EDIT_PRODUCT = "edit_product";
-
+import { CgDatabase } from "react-icons/cg";
+import { FaUserFriends } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { AiOutlineFileText } from "react-icons/ai";
+import { FaIndustry } from "react-icons/fa";
+import { Card } from "react-bootstrap";
 function AdminHomePage(props) {
-  const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const [page, setPage] = useState(LIST_PRODUCT);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const expand = "test";
-
-  const itemHandler = (event) => {
-    console.log(event.target.id);
-    setPage(event.target.id);
-  };
-
-  const logout = () => {
-    localStorage.clear();
-    navigate("/admin/login");
-  };
 
   return (
     <>
       <AdminSideBarNav />
-      {/* <Navbar key={expand} bg="light" expand={expand} className="mb-3">
-        <Container fluid>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-          <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${expand}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-            placement="start"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                Menu
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="/admin/home">Product Management</Nav.Link>
-                <Nav.Link href="/admin/transaction">Transaction Management</Nav.Link>
-                <Nav.Link href="#action2">User Management</Nav.Link>
-                <Nav.Link onClick={logout}>Logout</Nav.Link>
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
-      </Navbar> */}
-      <div style={{ marginLeft: 20, marginRight: 20 }}>
-        <h2 style={{ textAlign: "center", marginBottom: 20 }}>
-          Product Management
-        </h2>
-        <div style={{ paddingLeft: 30 }}>
-          <Nav fill variant="tabs" defaultActiveKey="link-1">
-            <Nav.Item>
-              <Nav.Link
-                id={LIST_PRODUCT}
-                onClick={itemHandler}
-                eventKey="link-1"
-              >
-                List Product
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                id={ADD_PRODUCT}
-                onClick={itemHandler}
-                eventKey="link-3"
-              >
-                Add Product
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-          {(() => {
-            switch (page) {
-              case LIST_PRODUCT:
-                return <ListProduct />;
-              case ADD_PRODUCT:
-                return <AddProduct />;
-              default:
-                return null;
-            }
-          })()}
+      <div style={{ textAlign: "center" }}>
+        <h2>Welcome to Warehouse Management System</h2>
+        <h6>Role: Admin</h6>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <Link to="/admin/product">
+            <Card style={{ margin: 20 }}>
+              <div style={{ margin: 20, textAlign: "center" }}>
+                <CgDatabase size={50} />
+                <Card.Title>
+                  Product
+                  <br /> Management
+                </Card.Title>
+              </div>
+            </Card>
+          </Link>
+          <Link to="/admin/users">
+            <Card style={{ margin: 20 }}>
+              <div style={{ margin: 20, textAlign: "center" }}>
+                <FaUserFriends size={50} />
+                <Card.Title>
+                  User
+                  <br /> Management
+                </Card.Title>
+              </div>
+            </Card>
+          </Link>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <Link to="/admin/transaction">
+            <Card style={{ margin: 20 }}>
+              <div style={{ margin: 20, textAlign: "center" }}>
+                <AiOutlineFileText size={50} />
+                <Card.Title>
+                  Transaction
+                  <br /> Management
+                </Card.Title>
+              </div>
+            </Card>
+          </Link>
+          <Link to="/admin/warehouse">
+            <Card style={{ margin: 20 }}>
+              <div style={{ margin: 20, textAlign: "center" }}>
+                <FaIndustry size={50} />
+                <Card.Title>
+                  Warehouse
+                  <br /> Management
+                </Card.Title>
+              </div>
+            </Card>
+          </Link>
         </div>
       </div>
     </>

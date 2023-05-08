@@ -24,12 +24,12 @@ function AdminSideBarNav(props) {
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-              Menu
+              <a href="/admin/home">Home</a>
             </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/admin/home">Product Management</Nav.Link>
+              <Nav.Link href="/admin/product">Product Management</Nav.Link>
               <Nav.Link href="/admin/warehouse">Warehouse Management</Nav.Link>
               <Nav.Link href="/admin/transaction">
                 Transaction Management
