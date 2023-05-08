@@ -6,6 +6,8 @@ import AddWareHouse from "../../components/AddWarehouse";
 import { Nav } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
+import withAuthorization from "../../auth/withAuthorization";
+import { ADMIN, MANAGER } from "../../constants/roles";
 
 const LIST_WAREHOUSE = "list_warehouse";
 const ADD_WAREHOUSE = "add_warehouse";
@@ -60,4 +62,4 @@ function WarehousePage() {
   );
 }
 
-export default WarehousePage;
+export default withAuthorization(WarehousePage,[ADMIN,MANAGER]);

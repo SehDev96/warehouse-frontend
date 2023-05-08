@@ -1,67 +1,25 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Navbar,
-  Nav,
-  NavDropdown,
-  Offcanvas,
-  Form,
-} from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import InboundTransaction from "../../components/InboundTransaction";
 import OutboundTransaction from "../../components/OutboundTransaction";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
+import withAuthorization from "../../auth/withAuthorization";
+import { ADMIN, MANAGER, OPERATOR } from "../../constants/roles";
 
 const INBOUND_TRANSACTION = "inbound_transaction";
 const OUTBOUND_TRANSACTION = "outbound_transaction";
 
 function TransactionPage(props) {
-  const navigate = useNavigate();
   const [page, setPage] = useState(INBOUND_TRANSACTION);
-
-  const expand = "test";
 
   const componentHandler = (event) => {
     setPage(event.target.id);
   };
 
-  const logout = () => {
-    localStorage.clear();
-    navigate("/admin/login");
-  };
-
   return (
     <>
       <AdminSideBarNav />
-      {/* <Navbar key={expand} bg="light" expand={expand} className="mb-3">
-        <Container fluid>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-          <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${expand}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-            placement="start"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                Menu
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="/admin/home">Product Management</Nav.Link>
-                <Nav.Link href="/admin/transaction">
-                  Transaction Management
-                </Nav.Link>
-                <Nav.Link href="#action2">User Management</Nav.Link>
-                <Nav.Link onClick={logout}>Logout</Nav.Link>
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
-      </Navbar> */}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           Transaction Management
@@ -103,4 +61,4 @@ function TransactionPage(props) {
   );
 }
 
-export default TransactionPage;
+export default withAuthorization(TransactionPage, [ADMIN, MANAGER, OPERATOR]);

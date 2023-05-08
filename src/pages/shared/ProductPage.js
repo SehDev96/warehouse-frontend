@@ -5,6 +5,8 @@ import ListProduct from "../../components/ListProduct";
 import AddProduct from "../../components/AddProduct";
 
 import AdminSideBarNav from "../../components/AdminSideBarNav";
+import withAuthorization from "../../auth/withAuthorization";
+import { ADMIN, MANAGER } from "../../constants/roles";
 
 const LIST_PRODUCT = "list_product";
 const ADD_PRODUCT = "add_product";
@@ -61,4 +63,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default withAuthorization(ProductPage, [ADMIN, MANAGER]);

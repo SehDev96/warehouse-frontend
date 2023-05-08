@@ -3,6 +3,8 @@ import { Nav } from "react-bootstrap";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import AddUser from "../../components/AddUser";
 import ListUser from "../../components/ListUsers";
+import withAuthorization from "../../auth/withAuthorization";
+import { ADMIN, MANAGER } from "../../constants/roles";
 
 const LIST_USERS = "list_users";
 const ADD_USER = "add_user";
@@ -58,4 +60,4 @@ function UserPage() {
   );
 }
 
-export default UserPage;
+export default withAuthorization(UserPage,[ADMIN,MANAGER]);

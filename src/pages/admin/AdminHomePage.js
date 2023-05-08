@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../styles/adminhomepage.css";
 
-import { useNavigate } from "react-router-dom";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import { CgDatabase } from "react-icons/cg";
 import { FaUserFriends } from "react-icons/fa";
@@ -9,8 +8,9 @@ import { Link } from "react-router-dom";
 import { AiOutlineFileText } from "react-icons/ai";
 import { FaIndustry } from "react-icons/fa";
 import { Card } from "react-bootstrap";
+import withAuthorization from "../../auth/withAuthorization";
+import { ADMIN } from "../../constants/roles";
 function AdminHomePage(props) {
-
   return (
     <>
       <AdminSideBarNav />
@@ -80,4 +80,4 @@ function AdminHomePage(props) {
   );
 }
 
-export default AdminHomePage;
+export default withAuthorization(AdminHomePage, [ADMIN]);

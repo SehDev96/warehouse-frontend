@@ -8,6 +8,7 @@ import WarehousePage from "./pages/shared/WarehousePage";
 import AdminHomePage from "./pages/admin/AdminHomePage";
 import UserPage from "./pages/shared/UserPage";
 import ProductPage from "./pages/shared/ProductPage";
+import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/admin/transaction" element={<TransactionPage />} />
         <Route path="/admin/warehouse" element={<WarehousePage />} />
         <Route path="/admin/users" element={<UserPage />} />
+        <Route path="/unauthorized" element={<UnAuthorizedPage />} />
         <Route element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
