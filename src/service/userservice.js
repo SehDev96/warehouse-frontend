@@ -19,6 +19,12 @@ export const getAllUserAdminRole = runBefore(
   checkAndRefreshToken
 );
 
+export const getAllUserManagerRole = runBefore(
+  getAllUsersManagerRoleRequest,
+  checkAndRefreshToken
+);
+
+
 async function addUserAdminRoleRequest(data) {
   try {
     const response = await AuthenticatedRequest.post(
@@ -37,6 +43,17 @@ async function addUserAdminRoleRequest(data) {
 async function getAllUsersAdminRoleRequest() {
   try {
     const response = await AuthenticatedRequest.get(endpoints.ADMIN_GET_USERS);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response;
+  }
+}
+
+async function getAllUsersManagerRoleRequest() {
+  try {
+    const response = await AuthenticatedRequest.get(endpoints.MANAGER_GET_USERS);
     console.log(response);
     return response.data;
   } catch (error) {

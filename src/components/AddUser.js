@@ -3,14 +3,14 @@ import User from "../model/User";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import { roleList } from "../constants/roles";
+import { ADMIN, managerRoleList, roleList } from "../constants/roles";
 import { addUserAdminRole } from "../service/userservice";
 
 const USERNAME = "username";
 const ROLE = "role";
 const PASSWORD = "password";
 
-function AddUser() {
+function AddUser(props) {
   const [user, setUser] = useState(new User());
   const [addedUser, setAddedUser] = useState([]);
 
@@ -78,7 +78,7 @@ function AddUser() {
               Please ensure that the Username entered is unique.
             </Form.Text>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="formBasicEmail1">
             <div
               style={{ marginTop: 20, display: "flex", alignItems: "center" }}
             >
@@ -95,7 +95,7 @@ function AddUser() {
               />
             </div>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="formBasicEmail2">
             <div
               style={{ marginTop: 20, display: "flex", alignItems: "center" }}
             >
@@ -110,13 +110,27 @@ function AddUser() {
                 <option disabled selected value="">
                   Choose role
                 </option>
-                {roleList.map((item) => {
-                  return (
-                    <option key={item} id={item} value={item}>
-                      {item}
-                    </option>
-                  );
-                })}
+                {props.role === ADMIN ? (
+                  <>
+                    {roleList.map((item) => {
+                      return (
+                        <option key={item} id={item} value={item}>
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    {managerRoleList.map((item) => {
+                      return (
+                        <option key={item} id={item} value={item}>
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </>
+                )}
               </Form.Select>
             </div>
           </Form.Group>

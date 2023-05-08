@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
 
 import ListProduct from "../../components/ListProduct";
@@ -7,6 +7,8 @@ import AddProduct from "../../components/AddProduct";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import withAuthorization from "../../auth/withAuthorization";
 import { ADMIN, MANAGER } from "../../constants/roles";
+import { getRolesFromToken } from "../../utils/tokenutils";
+import SideBarNav from "../../components/SideBarNav";
 
 const LIST_PRODUCT = "list_product";
 const ADD_PRODUCT = "add_product";
@@ -19,9 +21,25 @@ function ProductPage() {
     setPage(event.target.id);
   };
 
+  const [role, setRole] = useState("loading");
+
+  useEffect(() => {
+    async function pageLoader() {
+      try {
+        const userRole = await getRolesFromToken();
+        console.log(userRole[0]);
+        setRole(userRole[0]);
+      } catch (error) {
+        console.error(error);
+        setRole("error");
+      }
+    }
+    pageLoader();
+  }, []);
+
   return (
     <>
-      <AdminSideBarNav />
+      {role === ADMIN ? <AdminSideBarNav /> : <SideBarNav />}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           Product Management

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import ListWarehouse from "../../components/ListWarehouse";
 import AddWareHouse from "../../components/AddWarehouse";
@@ -8,6 +8,8 @@ import { Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import withAuthorization from "../../auth/withAuthorization";
 import { ADMIN, MANAGER } from "../../constants/roles";
+import { getRolesFromToken } from "../../utils/tokenutils";
+import SideBarNav from "../../components/SideBarNav";
 
 const LIST_WAREHOUSE = "list_warehouse";
 const ADD_WAREHOUSE = "add_warehouse";
@@ -18,9 +20,25 @@ function WarehousePage() {
     setPage(event.target.id);
   };
 
+  const [role, setRole] = useState("loading");
+
+  useEffect(() => {
+    async function pageLoader() {
+      try {
+        const userRole = await getRolesFromToken();
+        console.log(userRole[0]);
+        setRole(userRole[0]);
+      } catch (error) {
+        console.error(error);
+        setRole("error");
+      }
+    }
+    pageLoader();
+  }, []);
+
   return (
     <>
-      <AdminSideBarNav />
+      {role === ADMIN ? <AdminSideBarNav /> : <SideBarNav />}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           Warehouse Management
@@ -62,4 +80,4 @@ function WarehousePage() {
   );
 }
 
-export default withAuthorization(WarehousePage,[ADMIN,MANAGER]);
+export default withAuthorization(WarehousePage, [ADMIN, MANAGER]);

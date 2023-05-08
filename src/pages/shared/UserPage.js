@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import AddUser from "../../components/AddUser";
 import ListUser from "../../components/ListUsers";
 import withAuthorization from "../../auth/withAuthorization";
 import { ADMIN, MANAGER } from "../../constants/roles";
+import { getRolesFromToken } from "../../utils/tokenutils";
+import SideBarNav from "../../components/SideBarNav";
 
 const LIST_USERS = "list_users";
 const ADD_USER = "add_user";
@@ -16,9 +18,25 @@ function UserPage() {
     setPage(event.target.id);
   };
 
+  const [role, setRole] = useState("loading");
+
+  useEffect(() => {
+    async function pageLoader() {
+      try {
+        const userRole = await getRolesFromToken();
+        console.log(userRole[0]);
+        setRole(userRole[0]);
+      } catch (error) {
+        console.error(error);
+        setRole("error");
+      }
+    }
+    pageLoader();
+  }, []);
+
   return (
     <>
-      <AdminSideBarNav />
+      {role === ADMIN ? <AdminSideBarNav /> : <SideBarNav />}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           User Management
@@ -47,9 +65,9 @@ function UserPage() {
           {(() => {
             switch (page) {
               case ADD_USER:
-                return <AddUser />;
+                return <AddUser role={role} />;
               case LIST_USERS:
-                return <ListUser />;
+                return <ListUser role={role} />;
               default:
                 return null;
             }
@@ -60,4 +78,4 @@ function UserPage() {
   );
 }
 
-export default withAuthorization(UserPage,[ADMIN,MANAGER]);
+export default withAuthorization(UserPage, [ADMIN, MANAGER]);

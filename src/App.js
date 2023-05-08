@@ -23,7 +23,10 @@ function App() {
         <Route path="/admin/users" element={<UserPage />} />
 
         <Route path="/home" element={<HomePage />} />
+        <Route path="/product" element={<ProductPage />} />
         <Route path="/transaction" element={<TransactionPage />} />
+        <Route path="/warehouse" element={<WarehousePage />} />
+        <Route path="/users" element={<UserPage />} />
         <Route element={<NotFoundPage />} />
         <Route path="/unauthorized" element={<UnAuthorizedPage />} />
       </Routes>

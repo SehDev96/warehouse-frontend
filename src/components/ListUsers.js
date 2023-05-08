@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { getAllUserAdminRole } from "../service/userservice";
+import {
+  getAllUserAdminRole,
+  getAllUserManagerRole,
+} from "../service/userservice";
+import { ADMIN } from "../constants/roles";
 
-function ListUser() {
+function ListUser(props) {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     async function pageLoader() {
-      let res = await getAllUserAdminRole();
+      let res = null;
+      if (props.role === ADMIN) {
+        res = await getAllUserAdminRole();
+      } else {
+        res = await getAllUserManagerRole();
+      }
+
       if (res.response_code === 200) {
         console.log(res.payload);
         setUserList(res.payload);
