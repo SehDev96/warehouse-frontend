@@ -6,6 +6,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import TransactionPage from "./pages/shared/TransactionPage";
 import WarehousePage from "./pages/shared/WarehousePage";
 import AdminHomePage from "./pages/admin/AdminHomePage";
+import UserPage from "./pages/shared/UserPage";
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/admin/home" element={<AdminHomePage />} />
         <Route path="/admin/transaction" element={<TransactionPage />} />
         <Route path="/admin/warehouse" element={<WarehousePage />} />
+        <Route path="/admin/users" element={<UserPage />} />
         <Route element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

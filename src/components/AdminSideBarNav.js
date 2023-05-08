@@ -34,7 +34,7 @@ function AdminSideBarNav(props) {
               <Nav.Link href="/admin/transaction">
                 Transaction Management
               </Nav.Link>
-              <Nav.Link href="#action2">User Management</Nav.Link>
+              <Nav.Link href="/admin/users">User Management</Nav.Link>
               <Nav.Link onClick={logout}>Logout</Nav.Link>
             </Nav>
           </Offcanvas.Body>
