@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsersAdminRole } from "../service/userservice";
 import { Table } from "react-bootstrap";
+import { getAllUserAdminRole } from "../service/userservice";
 
 function ListUser() {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     async function pageLoader() {
-      let res = await getAllUsersAdminRole();
+      let res = await getAllUserAdminRole();
       if (res.response_code === 200) {
         console.log(res.payload);
         setUserList(res.payload);

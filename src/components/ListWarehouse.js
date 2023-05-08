@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  getAllWarehouse,
-  updateEditedWarehouse,
+  getAllWarehouseWithBefore,
+  updateEditedWarehouseWithBefore,
 } from "../service/warehouseservice";
 import Table from "react-bootstrap/Table";
 import { FaEdit, FaWindows } from "react-icons/fa";
@@ -24,7 +24,7 @@ function ListWarehouse() {
 
   useEffect(() => {
     async function pageLoader() {
-      let res = await getAllWarehouse();
+      let res = await getAllWarehouseWithBefore();
       if (res.response_code === 200) {
         await console.log(res.payload);
         setWarehouseList(res.payload);
@@ -94,7 +94,7 @@ function ListWarehouse() {
   async function editWarehouseSubmit(event) {
     console.log("EDIT");
     try {
-      let response = await updateEditedWarehouse(warehouseToEdit);
+      let response = await updateEditedWarehouseWithBefore(warehouseToEdit);
       console.log(response);
         if (response.success && response.response_code === 200) {
           setShowModal(false);

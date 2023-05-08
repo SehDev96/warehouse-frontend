@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import WarehouseModel from "../model/WarehouseModel";
-import { addWarehouse } from "../service/warehouseservice";
+import { addWarehouse, addWarehouseWithBefore } from "../service/warehouseservice";
 import { Alert } from "react-bootstrap";
 
 const WAREHOUSE_NAME = "warehouse_name";
@@ -19,7 +19,8 @@ function AddWareHouse() {
 
   async function addWarehouseSubmit(event) {
     event.preventDefault();
-    let response = await addWarehouse(warehouse);
+    let response = await addWarehouseWithBefore(warehouse);
+    console.log("WAREHOUSE RESPONSE: ", response);
     if (response.success && response.response_code === 200) {
       alert("Warehouse Successfully Added!");
       setAddedWarehouse((addedWarehouse) => [

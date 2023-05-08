@@ -4,12 +4,9 @@ import Pagination from "react-bootstrap/Pagination";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import {
-  updateEditedProduct,
-  getPaginatedProducts,
-} from "../service/productservice";
-import { FaEdit, FaWindows } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import ProductModel from "../model/ProductModel";
+import { getPaginatedProducts, updateEditedProduct } from "../service/productservice";
 
 const NAME = "name";
 const DESCRIPTION = "description";

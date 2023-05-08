@@ -2,12 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import { getWarehouseCodeList } from "../service/warehouseservice";
+import { getWarehouseCodeListWithBefore } from "../service/warehouseservice";
 import InboundTransactionModel from "../model/InboundTransactionModel";
-import {
-  addInboundTransaction,
-  addInboundTransactionFromCsv,
-} from "../service/transactionservice";
+import { addInboundTransaction, addInboundTransactionCsv } from "../service/transactionservice";
+
 
 const SKU = "sku";
 const REFERENCE = "reference";
@@ -27,7 +25,7 @@ function InboundTransaction(props) {
 
   useEffect(() => {
     async function pageLoader() {
-      let res = await getWarehouseCodeList();
+      let res = await getWarehouseCodeListWithBefore();
       if (res.response_code === 200) {
         await console.log(res.payload);
         setWarehouseCodeList(res.payload);
@@ -118,7 +116,7 @@ function InboundTransaction(props) {
   async function handleCsvSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    let response = await addInboundTransactionFromCsv(formData);
+    let response = await addInboundTransactionCsv(formData);
     if (response.success && response.response_code === 200) {
       alert(response.message);
       for (let i = 0; i < response.payload.length; i++) {

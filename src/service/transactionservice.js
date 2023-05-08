@@ -1,9 +1,40 @@
-import axios from "axios";
 import * as endpoints from "../constants/apiendpoints";
+import AuthenticatedRequest from "../axios/AuthenticatedRequest";
+import { checkAndRefreshToken } from "../utils/tokenutils";
 
-export async function addInboundTransaction(data) {
+function runBefore(originalFunc, beforeFunc) {
+  return async function (...args) {
+    beforeFunc();
+    return await originalFunc(...args);
+  };
+}
+
+export const addInboundTransaction = runBefore(
+  addInboundTransactionRequest,
+  checkAndRefreshToken
+);
+
+export const addInboundTransactionCsv = runBefore(
+  addInboundTransactionCsvRequest,
+  checkAndRefreshToken
+);
+
+export const addOutboundTransaction = runBefore(
+  addOutboundTransactionRequest,
+  checkAndRefreshToken
+);
+
+export const addOutboundTransactionFromCsv = runBefore(
+  addOutboundTransactionFromCsvRequest,
+  checkAndRefreshToken
+);
+
+async function addInboundTransactionRequest(data) {
   try {
-    const response = await axios.post(endpoints.ADD_INBOUND_TRANSACTION, data);
+    const response = await AuthenticatedRequest.post(
+      endpoints.ADD_INBOUND_TRANSACTION,
+      data
+    );
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 500) {
@@ -13,25 +44,24 @@ export async function addInboundTransaction(data) {
   }
 }
 
-
-export async function addInboundTransactionFromCsv(file) {
+async function addInboundTransactionCsvRequest(file) {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    const response = await axios.post(endpoints.ADD_INBOUND_TRANSACTION_CSV, file, config);
+    const response = await AuthenticatedRequest.postMultiPart(
+      endpoints.ADD_INBOUND_TRANSACTION_CSV,
+      file
+    );
     return response.data;
   } catch (error) {
     console.log(error.response);
   }
 }
 
-export async function addOutboundTransaction(data) {
+async function addOutboundTransactionRequest(data) {
   try {
-    const response = await axios.post(endpoints.ADD_OUTBOUND_TRANSACTION, data);
+    const response = await AuthenticatedRequest.post(
+      endpoints.ADD_OUTBOUND_TRANSACTION,
+      data
+    );
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 500) {
@@ -41,16 +71,12 @@ export async function addOutboundTransaction(data) {
   }
 }
 
-
-export async function addOutboundTransactionFromCsv(file) {
+async function addOutboundTransactionFromCsvRequest(file) {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    const response = await axios.post(endpoints.ADD_OUTBOUND_TRANSACTION_CSV, file, config);
+    const response = await AuthenticatedRequest.postMultiPart(
+      endpoints.ADD_OUTBOUND_TRANSACTION_CSV,
+      file
+    );
     return response.data;
   } catch (error) {
     console.log(error.response);

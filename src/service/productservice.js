@@ -1,14 +1,45 @@
 import * as endpoints from "../constants/apiendpoints";
 import AuthenticatedRequest from "../axios/AuthenticatedRequest";
-import axios from "axios";
-import ApiResponseModel from "../model/ApiResponseModel";
+import { checkAndRefreshToken } from "../utils/tokenutils";
 
-const token = localStorage.getItem("access_token");
-//axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+function runBefore(originalFunc, beforeFunc) {
+  return async function (...args) {
+    beforeFunc();
+    return await originalFunc(...args);
+  };
+}
 
-export async function insertProduct(data) {
+export const insertProduct = runBefore(
+  insertProductRequest,
+  checkAndRefreshToken
+);
+export const addProductFromCsv = runBefore(
+  addProductFromCsvRequest,
+  checkAndRefreshToken
+);
+export const getAllProducts = runBefore(
+  getAllProductsRequest,
+  checkAndRefreshToken
+);
+export const getPaginatedProducts = runBefore(
+  getPaginatedProductsRequest,
+  checkAndRefreshToken
+);
+export const updateEditedProduct = runBefore(
+  updateEditedProductRequest,
+  checkAndRefreshToken
+);
+export const searchProduct = runBefore(
+  searchProductRequest,
+  checkAndRefreshToken
+);
+
+async function insertProductRequest(data) {
   try {
-    const response = await axios.post(endpoints.ADD_PRODUCT, data);
+    const response = await AuthenticatedRequest.post(
+      endpoints.ADD_PRODUCT,
+      data
+    );
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 409) {
@@ -18,31 +49,31 @@ export async function insertProduct(data) {
   }
 }
 
-export async function addProductFromCsv(file) {
+async function addProductFromCsvRequest(file) {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    const response = await axios.post(endpoints.ADD_PRODUCT_CSV, file, config);
+    const response = await AuthenticatedRequest.postMultiPart(
+      endpoints.ADD_PRODUCT_CSV,
+      file
+    );
     return response.data;
   } catch (error) {
     console.log(error.response);
   }
 }
 
-export async function getAllProducts() {
+async function getAllProductsRequest() {
   console.log("ACCESS TOKEN: ", localStorage.getItem("access_token"));
   try {
-    const response = await axios.get(endpoints.GET_ALL_PRODUCTS, {
-      params: {
-        q: "Mineral",
-        pageIndex: 0,
-        pageSize: 10,
-      },
-    });
+    const response = await AuthenticatedRequest.get(
+      endpoints.GET_ALL_PRODUCTS,
+      {
+        params: {
+          q: "Mineral",
+          pageIndex: 0,
+          pageSize: 10,
+        },
+      }
+    );
     console.log(response);
     return response.data;
   } catch (error) {
@@ -51,22 +82,20 @@ export async function getAllProducts() {
   }
 }
 
-export async function getPaginatedProducts(parameter) {
+async function getPaginatedProductsRequest(parameter) {
   console.log("Pagination: ", parameter);
   let response = null;
 
   try {
-    // if(parameter === undefined){
-    //   response = await axios.get(endpoints.PAGINATED_ALL_PRODUCT);
-    // } else {
-    response = await axios.get(endpoints.PAGINATED_ALL_PRODUCT, {
+    response = await AuthenticatedRequest.get(endpoints.PAGINATED_ALL_PRODUCT, {
       params: {
         q: parameter.q,
         pageIndex: parameter.pageIndex,
         pageSize: 10,
       },
     });
-    // }
+
+    console.log("RESPONSE DATA: ", response.data);
 
     return response.data;
   } catch (error) {
@@ -75,10 +104,10 @@ export async function getPaginatedProducts(parameter) {
   }
 }
 
-export async function updateEditedProduct(appProduct) {
+async function updateEditedProductRequest(appProduct) {
   console.log("Product To Submit: ", appProduct);
   try {
-    const response = await axios.put(
+    const response = await AuthenticatedRequest.put(
       endpoints.UPDATE_PRODUCT + "/" + appProduct.id,
       {
         name: appProduct.name,
@@ -87,10 +116,6 @@ export async function updateEditedProduct(appProduct) {
         price: appProduct.price,
       }
     );
-    // const response = await axios.put(
-    //   endpoints.UPDATE_PRODUCT,
-    //   JSON.parse(appProduct)
-    // );
     return response.data;
   } catch (error) {
     console.log(error.response);
@@ -98,9 +123,9 @@ export async function updateEditedProduct(appProduct) {
   }
 }
 
-export async function searchProduct(key) {
+async function searchProductRequest(key) {
   try {
-    const response = await axios.get(endpoints.SEARCH_PRODUCT, {
+    const response = await AuthenticatedRequest.get(endpoints.SEARCH_PRODUCT, {
       params: { key },
     });
     return response.data;
