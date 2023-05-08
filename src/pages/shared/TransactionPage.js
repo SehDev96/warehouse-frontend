@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import InboundTransaction from "../../components/InboundTransaction";
@@ -6,6 +6,8 @@ import OutboundTransaction from "../../components/OutboundTransaction";
 import AdminSideBarNav from "../../components/AdminSideBarNav";
 import withAuthorization from "../../auth/withAuthorization";
 import { ADMIN, MANAGER, OPERATOR } from "../../constants/roles";
+import { getRolesFromToken } from "../../utils/tokenutils";
+import SideBarNav from "../../components/SideBarNav";
 
 const INBOUND_TRANSACTION = "inbound_transaction";
 const OUTBOUND_TRANSACTION = "outbound_transaction";
@@ -17,9 +19,25 @@ function TransactionPage(props) {
     setPage(event.target.id);
   };
 
+  const [role, setRole] = useState("loading");
+
+  useEffect(() => {
+    async function pageLoader() {
+      try {
+        const userRole = await getRolesFromToken();
+        console.log(userRole[0]);
+        setRole(userRole[0]);
+      } catch (error) {
+        console.error(error);
+        setRole("error");
+      }
+    }
+    pageLoader();
+  }, []);
+
   return (
     <>
-      <AdminSideBarNav />
+      {role === ADMIN ? <AdminSideBarNav /> : <SideBarNav />}
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           Transaction Management

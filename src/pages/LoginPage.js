@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import ApiResponseModel from "../model/ApiResponseModel";
-import { login } from "../service/authservice";
-import LoginRequest from "../model/LoginRequest";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/homepage.css";
+import { login } from "../service/authservice";
+import ApiResponseModel from "../model/ApiResponseModel";
+import LoginRequest from "../model/LoginRequest";
 
 const password = "password";
 const username = "username";
 
-function AdminLoginPage(props) {
+function LoginPage(props) {
   const [loginModel, setLoginModel] = useState(new LoginRequest());
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ function AdminLoginPage(props) {
     if (apiResponse.response_code === 200) {
       localStorage.setItem("access_token", apiResponse.payload.access_token);
       localStorage.setItem("refresh_token", apiResponse.payload.refresh_token);
-      navigate("/admin/home");
+      navigate("/home");
     } else if (apiResponse.status === 401) {
       alert("Login Failed: ", apiResponse.message);
     } else {
@@ -28,7 +28,6 @@ function AdminLoginPage(props) {
       alert("Server Error");
     }
   };
-
 
   function inputHandler(inputField, param) {
     if (param === username) {
@@ -48,7 +47,7 @@ function AdminLoginPage(props) {
     <div className="home-container">
       <form className="Auth-form">
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Welcome to Warehouse Admin Page!</h3>
+          <h3 className="Auth-form-title">Welcome to Warehouse!</h3>
           <div className="form-group mt-3">
             <label>Username</label>
             <input
@@ -70,9 +69,11 @@ function AdminLoginPage(props) {
           <div className="d-grid gap-2 mt-3">
             <button
               type="submit"
-              onClick={handleSubmit}
               className="btn btn-primary"
-              disabled={loginModel.username === '' || loginModel.password === ''}
+              onClick={handleSubmit}
+              disabled={
+                loginModel.username === "" || loginModel.password === ""
+              }
             >
               Submit
             </button>
@@ -83,4 +84,4 @@ function AdminLoginPage(props) {
   );
 }
 
-export default AdminLoginPage;
+export default LoginPage;
