@@ -24,6 +24,8 @@ export const ADD_OUTBOUND_TRANSACTION =
 export const ADD_OUTBOUND_TRANSACTION_CSV =
   API_PREFIX + "/transaction/outbound/add/upload";
 
+export const GET_TRANSACTION_LIST = API_PREFIX + "/transaction/list";
+
 export const CREATE_USER = API_PREFIX + "/users/add";
 export const ADMIN_GET_USERS = API_PREFIX + "/users/admin/list";
 export const MANAGER_GET_USERS = API_PREFIX + "/users/manager/list";

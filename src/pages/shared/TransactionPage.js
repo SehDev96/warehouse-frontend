@@ -8,9 +8,11 @@ import withAuthorization from "../../auth/withAuthorization";
 import { ADMIN, MANAGER, OPERATOR } from "../../constants/roles";
 import { getRolesFromToken } from "../../utils/tokenutils";
 import SideBarNav from "../../components/SideBarNav";
+import ListTransaction from "../../components/ListTransactions";
 
 const INBOUND_TRANSACTION = "inbound_transaction";
 const OUTBOUND_TRANSACTION = "outbound_transaction";
+const LIST_TRANSACTION = "list_transaction";
 
 function TransactionPage(props) {
   const [page, setPage] = useState(INBOUND_TRANSACTION);
@@ -57,9 +59,18 @@ function TransactionPage(props) {
               <Nav.Link
                 id={OUTBOUND_TRANSACTION}
                 onClick={componentHandler}
-                eventKey="link-3"
+                eventKey="link-2"
               >
                 Outbound Transaction
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                id={LIST_TRANSACTION}
+                onClick={componentHandler}
+                eventKey="link-3"
+              >
+                List Transaction
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -69,6 +80,8 @@ function TransactionPage(props) {
                 return <InboundTransaction />;
               case OUTBOUND_TRANSACTION:
                 return <OutboundTransaction />;
+              case LIST_TRANSACTION:
+                return <ListTransaction />;
               default:
                 return null;
             }

@@ -29,6 +29,11 @@ export const addOutboundTransactionFromCsv = runBefore(
   checkAndRefreshToken
 );
 
+export const getTransactionList = runBefore(
+  getTransactionListRequest,
+  checkAndRefreshToken
+);
+
 async function addInboundTransactionRequest(data) {
   try {
     const response = await AuthenticatedRequest.post(
@@ -76,6 +81,21 @@ async function addOutboundTransactionFromCsvRequest(file) {
     const response = await AuthenticatedRequest.postMultiPart(
       endpoints.ADD_OUTBOUND_TRANSACTION_CSV,
       file
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+  }
+}
+
+async function getTransactionListRequest(option, keyword) {
+  try {
+    const response = await AuthenticatedRequest.get(
+      endpoints.GET_TRANSACTION_LIST +
+        "?option=" +
+        option +
+        "&keyword=" +
+        keyword
     );
     return response.data;
   } catch (error) {

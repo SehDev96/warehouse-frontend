@@ -64,6 +64,7 @@ function AddProduct(props) {
     const formData = new FormData(event.target);
     let response = await addProductFromCsv(formData);
     if (response.success && response.response_code === 200) {
+      alert(response.message);
       for (let i = 0; i < response.payload.length; i++) {
         setProductList((productList) => [...productList, response.payload[i]]);
       }
