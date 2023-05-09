@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { getWarehouseCodeListWithBefore } from "../service/warehouseservice";
 import InboundTransactionModel from "../model/InboundTransactionModel";
-import { addInboundTransaction, addInboundTransactionCsv } from "../service/transactionservice";
-
+import {
+  addInboundTransaction,
+  addInboundTransactionCsv,
+} from "../service/transactionservice";
 
 const SKU = "sku";
 const REFERENCE = "reference";
@@ -281,6 +283,36 @@ function InboundTransaction(props) {
               </Button>
             </div>
           </Form>
+
+          <div style={{ marginTop: 30 }}>
+            <p style={{ fontSize: 12 }}>
+              Data Format for Inbound Transaction Csv File:
+            </p>
+            <Table style={{ fontSize: 12 }} striped bordered hover>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>reference</th>
+                  <th>date_received</th>
+                  <th>product_sku</th>
+                  <th>quantity</th>
+                  <th>location</th>
+                  <th>remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>INBOUND001</td>
+                  <td>22/03/2023</td>
+                  <td>SAMPLESKU1</td>
+                  <td>20</td>
+                  <td>LOCATION-A</td>
+                  <td>Sample Inbound Transaction</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
       <div style={{ marginTop: 20 }}>

@@ -251,6 +251,35 @@ function OutboundTransaction(props) {
               </Button>
             </div>
           </Form>
+          <div style={{ marginTop: 30 }}>
+            <p style={{ fontSize: 12 }}>
+              Data Format for Outbound Transaction Csv File:
+            </p>
+            <Table style={{ fontSize: 12 }} striped bordered hover>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>reference</th>
+                  <th>date_shipped</th>
+                  <th>product_sku</th>
+                  <th>quantity</th>
+                  <th>destination</th>
+                  <th>remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>OUTBOUND001</td>
+                  <td>22/03/2023</td>
+                  <td>SAMPLESKU1</td>
+                  <td>20</td>
+                  <td>Company A</td>
+                  <td>Sample Outbound Transaction</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
       <div style={{ marginTop: 20 }}>

@@ -173,7 +173,26 @@ function AddProduct(props) {
               </Button>
             </div>
 
-            {/* <button type="submit">Submit</button> */}
+            <div style={{ marginTop: 30 }}>
+              <Table style={{ fontSize: 12 }} striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                    <th>Product Quantity</th>
+                    <th>Product Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sample Product</td>
+                    <td>This is a sample product</td>
+                    <td>10</td>
+                    <td>5.00</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
           </Form>
         </div>
       </div>
