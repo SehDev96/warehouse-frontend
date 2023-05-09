@@ -2,6 +2,7 @@
 FROM node:17.4-alpine as base
 WORKDIR /app
 COPY package.json ./
+COPY index.html ./
 ARG REACT_APP_API_BASE_URL 
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 RUN npm install --production
