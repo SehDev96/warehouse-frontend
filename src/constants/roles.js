@@ -3,4 +3,4 @@ export const MANAGER = "MANAGER";
 export const ADMIN = "ADMIN";
 
 export const roleList = [OPERATOR, MANAGER, ADMIN];
-export const managerRoleList = [OPERATOR];
+export const managerRoleList = [OPERATOR, MANAGER];

@@ -28,7 +28,7 @@ export const getAllUserManagerRole = runBefore(
 async function addUserAdminRoleRequest(data) {
   try {
     const response = await AuthenticatedRequest.post(
-      endpoints.ADMIN_CREATE_USER,
+      endpoints.CREATE_USER,
       data
     );
     return response.data;

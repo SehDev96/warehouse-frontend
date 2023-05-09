@@ -43,9 +43,19 @@ function AddUser(props) {
 
   async function addWarehouseSubmit(event) {
     event.preventDefault();
+    if (user.role === "") {
+      alert("Please select user's role");
+      return;
+    }
+
+    if (user.username === "" && user.password === "") {
+      alert("Please fill on username and password");
+      return;
+    }
+
     let response = await addUserAdminRole(user);
     if (response.success && response.response_code === 200) {
-      alert("Warehouse Successfully Added!");
+      alert("User has been created!");
       formRef.current.reset();
       setAddedUser((addedUser) => [...addedUser, response.payload]);
     } else if (response.success && response.response_code === 409) {
@@ -107,8 +117,8 @@ function AddUser(props) {
                 onChange={(event) => setUserDetails(event.target.value, ROLE)}
                 aria-label="Location Select"
               >
-                <option disabled selected value="">
-                  Choose role
+                <option defaultValue value="">
+                  Choose role...
                 </option>
                 {props.role === ADMIN ? (
                   <>
